@@ -1,0 +1,141 @@
+/* 彻底重置道具提示框的所有默认样式，避免主题干扰 */
+.md-typeset .admonition.item {
+    /* 强制背景色（优先级拉满） */
+    background-color: #000 !important;
+    background-image: none !important;
+    /* 清除主题默认背景图/渐变 */
+    /* 边框和基础布局 */
+    border: 1px solid #333 !important;
+    border-left: 4px solid #555 !important;
+    border-radius: 8px !important;
+    /* 内边距：左侧留足图标空间，彻底解决重叠 */
+    padding: 3px !important;
+    margin: 8px 0 !important;
+    /* 强制布局规则，避免主题篡改 */
+    /* 让 item 走伸缩布局，便于高度一致 */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    max-width: 220px !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+/* 让道具框内容居中显示 */
+.md-typeset .admonition.item {
+    text-align: center !important;
+}
+
+/* 标题样式（去掉图标偏移），并居中 */
+.md-typeset .admonition.item>.admonition-title {
+    padding-left: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    margin: 0 0 8px 0 !important;
+    color: #00bfff !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+}
+
+/* 关闭主题默认图标 */
+.md-typeset .admonition.item>.admonition-title::before,
+.md-typeset .admonition.item>.admonition-title .icon {
+    content: "" !important;
+    display: none !important;
+}
+
+/* 道具属性文字样式 默认 */
+.md-typeset .admonition.item .item-props {
+    color: #00bfff !important;
+    line-height: 1.8 !important;
+    font-size: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    /* 让换行符生效：保留 Markdown 中的换行为 <br> 效果 */
+    white-space: pre-line !important;
+}
+
+/* 道具属性文字样式 暗金 */
+.md-typeset .admonition.item .item-unique {
+    color: #57460e !important;
+    line-height: 1.8 !important;
+    font-size: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    white-space: pre-line !important;
+}
+
+/* 道具属性文字样式 套装 */
+.md-typeset .admonition.item .item-set {
+    color: limegreen !important;
+    line-height: 1.8 !important;
+    font-size: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    white-space: pre-line !important;
+}
+
+/* 限制道具框内图像大小 */
+.md-typeset .admonition.item img {
+    max-width: 120px !important;
+    max-height: 120px !important;
+    width: auto !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+/* 网格布局：保证两个道具框正常并排 */
+/* 兼容写法：优先支持 :has() 的现代浏览器，同时为不支持 :has() 的环境提供回退 */
+div.grid, div.grid:has(.admonition.item) {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+    grid-auto-rows: 1fr !important;
+    align-items: start !important;
+    gap: 12px !important;
+    margin: 20px 0 !important;
+}
+
+@media (max-width: 768px) {
+    div.grid, div.grid:has(.admonition.item) {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* 暗金/套装颜色 */
+.md-typeset .admonition.item.darkgold {
+    border-left-color: rgb(61, 52, 2) !important;
+    background-color: rgb(0, 0, 0) !important;
+}
+
+/* 如果使用“外层容器 + .darkgold”写法 */
+.md-typeset .darkgold .admonition.item {
+    border-left-color: rgb(61, 52, 2) !important;
+    background-color: rgb(0, 0, 0) !important;
+}
+
+.md-typeset .set .admonition.item {
+    border-left-color: limegreen !important;
+    background-color: rgb(0, 0, 0) !important;
+}
+
+
+/* 分割线本身 */
+.item-divider {
+    height: 1px;
+    margin: 1px 0; /* 核心：缩小上下外边距 */
+    border: none;
+    background: rgba(255, 255, 255, 0.18);
+    line-height: 0; /* 消除行高带来的隐形间距 */
+    font-size: 0; /* 防止空元素默认字号占空间 */
+}
+
+/* 可选：清除相邻元素的多余内边距（根据实际DOM调整） */
+.item-divider + * { /* 分割线后的第一个元素 */
+    margin-top: 0 !important; /* 覆盖可能的默认上边距 */
+}
+.item-divider ~ * { /* 分割线前的元素（如果需要） */
+    margin-bottom: 0 !important;
+}
