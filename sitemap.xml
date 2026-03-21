@@ -5,6 +5,10 @@
          <lastmod>2026-03-21</lastmod>
     </url>
     <url>
+         <loc>https://example.com/search/</loc>
+         <lastmod>2026-03-21</lastmod>
+    </url>
+    <url>
          <loc>https://example.com/%E7%9B%AE%E5%BD%95/</loc>
          <lastmod>2026-03-21</lastmod>
     </url>

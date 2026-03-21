@@ -139,3 +139,133 @@ div.grid, div.grid:has(.admonition.item) {
 .item-divider ~ * { /* 分割线前的元素（如果需要） */
     margin-bottom: 0 !important;
 }
+
+.inline-item-filter.inline-item-filter--default {
+    --inline-filter-border: #d7dde2;
+    --inline-filter-bg-start: #fafbfc;
+    --inline-filter-bg-end: #f2f5f7;
+    --inline-filter-shadow: rgba(15, 23, 42, 0.06);
+    --inline-filter-label: #1f2937;
+    --inline-filter-input-border: #c3ccd4;
+    --inline-filter-input-bg: #ffffff;
+    --inline-filter-input-text: #111827;
+    --inline-filter-input-placeholder: #7b8794;
+    --inline-filter-focus: rgba(51, 65, 85, 0.12);
+    --inline-filter-button-border: #111827;
+    --inline-filter-button-bg: #111827;
+    --inline-filter-button-text: #f8fafc;
+    --inline-filter-button-hover: #1f2937;
+    --inline-filter-count-text: #475569;
+    --inline-filter-count-bg: rgba(148, 163, 184, 0.12);
+}
+
+.inline-item-filter.inline-item-filter--slate {
+    --inline-filter-border: #334155;
+    --inline-filter-bg-start: #161c26;
+    --inline-filter-bg-end: #10151d;
+    --inline-filter-shadow: rgba(0, 0, 0, 0.24);
+    --inline-filter-label: #e5edf5;
+    --inline-filter-input-border: #475569;
+    --inline-filter-input-bg: #0f172a;
+    --inline-filter-input-text: #e2e8f0;
+    --inline-filter-input-placeholder: #94a3b8;
+    --inline-filter-focus: rgba(125, 211, 252, 0.18);
+    --inline-filter-button-border: #94a3b8;
+    --inline-filter-button-bg: #e2e8f0;
+    --inline-filter-button-text: #0f172a;
+    --inline-filter-button-hover: #cbd5e1;
+    --inline-filter-count-text: #cbd5e1;
+    --inline-filter-count-bg: rgba(148, 163, 184, 0.18);
+}
+
+.inline-item-filter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 8px 0 16px;
+    padding: 10px 12px;
+    border: 1px solid var(--inline-filter-border);
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--inline-filter-bg-start) 0%, var(--inline-filter-bg-end) 100%);
+    box-shadow: 0 1px 2px var(--inline-filter-shadow);
+}
+
+.inline-item-filter label {
+    font-weight: 600;
+    color: var(--inline-filter-label);
+    margin-right: 2px;
+}
+
+.inline-item-filter input[type="search"] {
+    min-width: 220px;
+    padding: 7px 10px;
+    border: 1px solid var(--inline-filter-input-border);
+    border-radius: 8px;
+    background: var(--inline-filter-input-bg);
+    color: var(--inline-filter-input-text);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.inline-item-filter input[type="search"]::placeholder {
+    color: var(--inline-filter-input-placeholder);
+}
+
+.inline-item-filter input[type="search"]:focus {
+    outline: none;
+    border-color: var(--md-accent-fg-color);
+    box-shadow: 0 0 0 3px var(--inline-filter-focus);
+}
+
+.inline-item-filter button {
+    padding: 5px 10px;
+    border: 1px solid var(--inline-filter-button-border);
+    border-radius: 8px;
+    background: var(--inline-filter-button-bg);
+    color: var(--inline-filter-button-text);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+
+.inline-item-filter button:hover {
+    background: var(--inline-filter-button-hover);
+    border-color: var(--inline-filter-button-hover);
+}
+
+.inline-item-filter button:active {
+    transform: translateY(1px);
+}
+
+.inline-item-filter button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--inline-filter-focus);
+}
+
+.inline-item-filter span {
+    color: var(--inline-filter-count-text);
+    font-size: 13px;
+    margin-left: auto;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: var(--inline-filter-count-bg);
+}
+
+@media (max-width: 768px) {
+    .inline-item-filter {
+        align-items: stretch;
+    }
+
+    .inline-item-filter label,
+    .inline-item-filter input[type="search"],
+    .inline-item-filter button,
+    .inline-item-filter span {
+        width: 100%;
+    }
+
+    .inline-item-filter span {
+        margin-left: 0;
+    }
+}
