@@ -250,6 +250,55 @@
 		return card;
 	}
 
+	function trimWrapperWhitespace(wrapper) {
+		while (wrapper.firstChild && wrapper.firstChild.nodeType === Node.TEXT_NODE && !wrapper.firstChild.textContent.trim()) {
+			wrapper.removeChild(wrapper.firstChild);
+		}
+		while (wrapper.lastChild && wrapper.lastChild.nodeType === Node.TEXT_NODE && !wrapper.lastChild.textContent.trim()) {
+			wrapper.removeChild(wrapper.lastChild);
+		}
+	}
+
+	function decorateItemMetaBetweenDividers() {
+		var cards = document.querySelectorAll(".md-content .admonition.item");
+		for (var c = 0; c < cards.length; c += 1) {
+			var dividers = cards[c].querySelectorAll("hr.item-divider");
+			if (dividers.length < 2) {
+				continue;
+			}
+
+			for (var i = 0; i < dividers.length - 1; i += 2) {
+				var start = dividers[i];
+				var end = dividers[i + 1];
+				if (!start || !end || start.parentNode !== end.parentNode) {
+					continue;
+				}
+
+				var maybeWrapped = start.nextElementSibling;
+				if (maybeWrapped && maybeWrapped.classList && maybeWrapped.classList.contains("item-meta")) {
+					continue;
+				}
+
+				var wrapper = document.createElement("div");
+				wrapper.className = "item-meta";
+				var node = start.nextSibling;
+				var moved = false;
+
+				while (node && node !== end) {
+					var next = node.nextSibling;
+					wrapper.appendChild(node);
+					moved = true;
+					node = next;
+				}
+
+				trimWrapperWhitespace(wrapper);
+				if (moved && wrapper.childNodes.length > 0) {
+					start.parentNode.insertBefore(wrapper, end);
+				}
+			}
+		}
+	}
+
 	function initCurrentPageItemFilter() {
 		var existingToolbar = document.querySelector(".inline-item-filter");
 		if (existingToolbar) {
@@ -326,6 +375,7 @@
 
 	function initPageFeatures() {
 		initAggregatedSearch();
+		decorateItemMetaBetweenDividers();
 		initCurrentPageItemFilter();
 	}
 

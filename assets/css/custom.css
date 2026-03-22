@@ -56,7 +56,16 @@
     /* 让换行符生效：保留 Markdown 中的换行为 <br> 效果 */
     white-space: pre-line !important;
 }
-
+/* 道具属性文字样式 默认 */
+.md-typeset .admonition.item .item-props0 {
+    color: #cfcfcf !important;
+    line-height: 1.8 !important;
+    font-size: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    /* 让换行符生效：保留 Markdown 中的换行为 <br> 效果 */
+    white-space: pre-line !important;
+}
 /* 道具属性文字样式 暗金 */
 .md-typeset .admonition.item .item-unique {
     color: #57460e !important;
@@ -138,6 +147,15 @@ div.grid, div.grid:has(.admonition.item) {
 }
 .item-divider ~ * { /* 分割线前的元素（如果需要） */
     margin-bottom: 0 !important;
+}
+
+/* 分割线之间的基础信息（如：部位/数值、需要等级） */
+.md-typeset .admonition.item .item-meta {
+    color: #ffffff !important;
+    line-height: 1.6 !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .inline-item-filter.inline-item-filter--default {
@@ -268,4 +286,27 @@ div.grid, div.grid:has(.admonition.item) {
     .inline-item-filter span {
         margin-left: 0;
     }
+}
+
+/* 所有装备框通用样式 */
+.item-box {
+  /* 背景图核心配置 */
+  background: url('/img/any/寒雨之种.jpg') no-repeat center center;
+  background-size: cover;  /* 覆盖整个盒子，自动适配尺寸 */
+  /* 可选美化 */
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  /* 可选：加半透明遮罩，避免文字和背景冲突 */
+  background-color: rgba(0, 0, 0, 0.1);
+  background-blend-mode: overlay;
+}
+
+/* 装备属性区域单独美化（可选） */
+.item-props {
+  color: #fff;  /* 白色文字，适配深色背景 */
+  text-shadow: 1px 1px 2px #000;  /* 文字加阴影，更清晰 */
+  margin-top: 10px;
+  line-height: 1.6;
 }
