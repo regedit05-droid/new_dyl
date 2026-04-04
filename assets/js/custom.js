@@ -373,10 +373,26 @@
 		applyFilter();
 	}
 
+	function initFooterYear() {
+		var yearEl = document.getElementById("dyl-footer-year");
+		if (!yearEl) {
+			return;
+		}
+
+		var start = parseInt((yearEl.textContent || "").trim(), 10);
+		var now = new Date().getFullYear();
+		if (!isNaN(start) && now > start) {
+			yearEl.textContent = start + "-" + now;
+		} else {
+			yearEl.textContent = String(now);
+		}
+	}
+
 	function initPageFeatures() {
 		initAggregatedSearch();
 		decorateItemMetaBetweenDividers();
 		initCurrentPageItemFilter();
+		initFooterYear();
 	}
 
 	document.addEventListener("DOMContentLoaded", function () {
