@@ -1,5 +1,73 @@
 // Aggregated search renderer for the custom search page.
 (function () {
+	var mermaidLoadPromise = null;
+
+	function loadMermaidRuntime() {
+		if (window.mermaid) {
+			return Promise.resolve(window.mermaid);
+		}
+
+		if (mermaidLoadPromise) {
+			return mermaidLoadPromise;
+		}
+
+		mermaidLoadPromise = new Promise(function (resolve, reject) {
+			var script = document.createElement("script");
+			script.src = "https://cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js";
+			script.async = true;
+			script.onload = function () {
+				if (window.mermaid) {
+					resolve(window.mermaid);
+					return;
+				}
+				reject(new Error("Mermaid runtime loaded but window.mermaid is unavailable"));
+			};
+			script.onerror = function () {
+				reject(new Error("Failed to load Mermaid runtime"));
+			};
+			document.head.appendChild(script);
+		});
+
+		return mermaidLoadPromise;
+	}
+
+	function prepareMermaidBlocks() {
+		var blocks = document.querySelectorAll("pre.mermaid");
+		for (var i = 0; i < blocks.length; i += 1) {
+			var pre = blocks[i];
+			var source = pre.querySelector("code");
+			var text = source ? source.textContent : pre.textContent;
+			var graph = document.createElement("div");
+			graph.className = "mermaid";
+			graph.textContent = String(text || "").replace(/^\s+|\s+$/g, "");
+			pre.parentNode.replaceChild(graph, pre);
+		}
+	}
+
+	function initMermaidDiagrams() {
+		var hasMermaidBlocks = document.querySelector("pre.mermaid, div.mermaid");
+		if (!hasMermaidBlocks) {
+			return;
+		}
+
+		prepareMermaidBlocks();
+
+		loadMermaidRuntime()
+			.then(function (mermaid) {
+				mermaid.initialize({
+					startOnLoad: false,
+					securityLevel: "loose",
+				});
+				var targets = document.querySelectorAll("div.mermaid");
+				if (targets.length > 0) {
+					mermaid.init(undefined, targets);
+				}
+			})
+			.catch(function (err) {
+				console.error("[custom.js] Mermaid render failed:", err);
+			});
+	}
+
 	function escapeHtml(str) {
 		return String(str || "")
 			.replace(/&/g, "&amp;")
@@ -389,6 +457,7 @@
 	}
 
 	function initPageFeatures() {
+		initMermaidDiagrams();
 		initAggregatedSearch();
 		decorateItemMetaBetweenDividers();
 		initCurrentPageItemFilter();
