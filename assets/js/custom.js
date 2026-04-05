@@ -1,4 +1,4 @@
-// Aggregated search renderer for the custom search page.
+﻿// Aggregated search renderer for the custom search page.
 (function () {
 	var mermaidLoadPromise = null;
 
@@ -60,7 +60,11 @@
 				});
 				var targets = document.querySelectorAll("div.mermaid");
 				if (targets.length > 0) {
-					mermaid.init(undefined, targets);
+					if (typeof mermaid.run === "function") {
+                        mermaid.run();
+                    } else {
+                        mermaid.init(undefined, targets);
+                    }
 				}
 			})
 			.catch(function (err) {
@@ -83,7 +87,7 @@
 
 	function splitTerms(query) {
 		return normalizeText(query)
-			.split(/[\s,.;:!?，。；：！？/\\|+\-]+/)
+			.split(/[\s,.;:!?锛屻€傦紱锛氾紒锛?\\|+\-]+/)
 			.map(function (t) {
 				return t.trim();
 			})
@@ -175,11 +179,11 @@
 
 	function getCategory(url) {
 		var clean = String(url || "").replace(/^\//, "");
-		var seg = clean.split("/")[0] || "其他";
+		var seg = clean.split("/")[0] || "鍏朵粬";
 		try {
-			return decodeURIComponent(seg) || "其他";
+			return decodeURIComponent(seg) || "鍏朵粬";
 		} catch (e) {
-			return seg || "其他";
+			return seg || "鍏朵粬";
 		}
 	}
 
@@ -188,7 +192,7 @@
 		var terms = splitTerms(query);
 
 		if (!normalizedQuery) {
-			container.innerHTML = "<p>请输入关键词进行聚合搜索。</p>";
+			container.innerHTML = "<p>璇疯緭鍏ュ叧閿瘝杩涜鑱氬悎鎼滅储銆?/p>";
 			return;
 		}
 
@@ -219,24 +223,24 @@
 		});
 
 		if (scored.length === 0) {
-			container.innerHTML = "<p>未找到与“" + escapeHtml(query) + "”相关的内容。</p>";
+			container.innerHTML = "<p>鏈壘鍒颁笌鈥? + escapeHtml(query) + "鈥濈浉鍏崇殑鍐呭銆?/p>";
 			return;
 		}
 
 		var top = scored.slice(0, 80);
 		var html = [];
-		html.push('<p class="search-summary">共找到 ' + top.length + ' 条结果（按相关度排序）</p>');
+		html.push('<p class="search-summary">鍏辨壘鍒?' + top.length + ' 鏉＄粨鏋滐紙鎸夌浉鍏冲害鎺掑簭锛?/p>');
 
 		for (var j = 0; j < top.length; j += 1) {
 			var item = top[j];
-			var title = escapeHtml(item.doc.title || "无标题");
+			var title = escapeHtml(item.doc.title || "鏃犳爣棰?);
 			var link = escapeHtml(item.doc.url || "#");
 			var category = escapeHtml(getCategory(item.doc.url));
 			var snippet = buildSnippet(item.doc.text || "", terms);
 			html.push(
 				'<article class="search-result">' +
 					'<h3><a href="' + link + '">' + title + '</a></h3>' +
-					'<div class="search-meta">分类：<span>' + category + '</span> · 相关度：' + item.score + '</div>' +
+					'<div class="search-meta">鍒嗙被锛?span>' + category + '</span> 路 鐩稿叧搴︼細' + item.score + '</div>' +
 					'<p>' + snippet + '</p>' +
 				'</article>'
 			);
@@ -260,7 +264,7 @@
 			})
 			.then(function (res) {
 				if (!res.ok) {
-					throw new Error("无法读取搜索索引");
+					throw new Error("鏃犳硶璇诲彇鎼滅储绱㈠紩");
 				}
 				return res.json();
 			})
@@ -269,7 +273,7 @@
 				renderSearchResults(container, docs, query);
 			})
 			.catch(function (err) {
-				container.innerHTML = '<p>搜索初始化失败：' + escapeHtml(err.message) + '</p>';
+				container.innerHTML = '<p>鎼滅储鍒濆鍖栧け璐ワ細' + escapeHtml(err.message) + '</p>';
 			});
 	}
 
@@ -395,9 +399,9 @@
 		var toolbar = document.createElement("div");
 		toolbar.className = "inline-item-filter";
 		toolbar.innerHTML =
-			'<label for="inline-item-filter-input">筛选</label>' +
-			'<input id="inline-item-filter-input" type="search" placeholder="输入关键词，如：黑暗 项链" />' +
-			'<button type="button" id="inline-item-filter-clear">清空</button>' +
+			'<label for="inline-item-filter-input">绛涢€?/label>' +
+			'<input id="inline-item-filter-input" type="search" placeholder="杈撳叆鍏抽敭璇嶏紝濡傦細榛戞殫 椤归摼" />' +
+			'<button type="button" id="inline-item-filter-clear">娓呯┖</button>' +
 			'<span id="inline-item-filter-count" aria-live="polite"></span>';
 
 		applyFilterTheme(toolbar);
@@ -428,7 +432,7 @@
 				}
 			}
 
-			countEl.textContent = "显示 " + visible + " / " + data.length;
+			countEl.textContent = "鏄剧ず " + visible + " / " + data.length;
 		}
 
 		input.addEventListener("input", applyFilter);
@@ -476,3 +480,5 @@
 		});
 	}
 })();
+
+
